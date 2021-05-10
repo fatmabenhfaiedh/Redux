@@ -1,36 +1,28 @@
-import React, {useState} from 'react';
+import React from 'react';
 import AddTask from './AddTask';
-
+import {useSelector, useDispatch} from 'react-redux'
+import { changeDone, deleteTask } from '../redux/actions/actions';
 const ListTask = () => {
 
-    const [tasks, setTasks] = useState([]);
+    
+const todos = useSelector(state => state.todos)
 
-    const addTask =(newTask) => setTasks([ newTask , ...tasks]);
+const dispatch = useDispatch()
 
-    // const [isDone, setIsDone] = useState(false);
 
 
     return (
         <div>
-            <AddTask addTask={addTask} />
+    
+            <AddTask />
 
             <ul>
-                { tasks.map ((task, i) => (
-                    <li key={i} >{task} <button  onClick={()=> {
+                { todos.map ((task, i) => (
+                <li key={i} > <span style={{textDecoration : task.isDone ? "line-through"  : "none"}}>{task.text}</span>
                     
-                 let newValue = prompt('Set a new task'); 
+                <button onClick={()=> dispatch(changeDone(i))}>{task.isDone ? "undo" : "done" }</button>            
 
-                 setTasks(tasks.map((el, index) => index === i ? el = newValue : el ))
-                    
-                    
-                }} >Edit</button>
-                
-                {/* <button  onClick={() => {let newColor = style={{color:"red"}};  */}
-
-                {/* setIsDone(tasks.filter((el,index) =>index === i ? el = newColor : el )) } >{isDone} Is Done</button>  */}
-                 
-
-                 <button  onClick={() => setTasks(tasks.filter((el,index) =>index !== i )) }   >X</button></li>
+                 <button  onClick ={() => dispatch(deleteTask(i)) } >X</button></li>
                 ))}
 
             </ul>

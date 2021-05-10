@@ -1,14 +1,18 @@
 import React from 'react'
 import {useState} from 'react'
 import './AddTask.css'
+import {useDispatch} from 'react-redux'
+import { addTask } from '../redux/actions/actions'
 
 
-const AddTask = ({addTask}) => {
+const AddTask = () => {
 
-    const [inputValue, setInput] = useState('')
+    const [inputValue, setInput] = useState({
+    text : "" ,
+    isDone : false})
 
 
-
+const dispatch = useDispatch()
 
 
     return (
@@ -18,14 +22,14 @@ const AddTask = ({addTask}) => {
 
                 e.preventDefault();
 
-                addTask(inputValue);
+                dispatch(addTask(inputValue))
 
-                setInput('')
+                setInput({...inputValue , text :""})
 
 
             }}>
 
-                <input id= "put" type="text"  value={inputValue}  onChange={(e)=> setInput(e.target.value)}/>
+                <input id= "put" type="text"  value={inputValue.text}  onChange={(e)=> setInput({...inputValue , text:e.target.value})}/>
 
                 <button type="submit" className= "addBtn">Add</button>
 
